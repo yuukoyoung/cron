@@ -1,0 +1,18 @@
+.idea
+.DS_store
+node_modules
+dist
+*.log
+
+# vscode
+.vscode/*
+!.vscode/settings.json
+
+# pnpm
+pnpm-lock.yaml
+
+# changeset
+.changeset/*.md
+
+# coverage
+coverage

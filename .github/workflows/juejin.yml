@@ -1,0 +1,44 @@
+name: Juejin
+
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  NODEJS_VERSION: 14.19.1
+  PNPM_VERSION: 7.1.1
+  PNPM_CACHE_FOLDER: ~/.pnpm-store
+
+jobs:
+  juejin:
+    name: juejin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js ${{ env.NODEJS_VERSION }}
+        # https://github.com/actions/setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODEJS_VERSION }}
+
+      - name: Setup pnpm ${{ env.PNPM_VERSION }}
+        run: npm install pnpm@${{ env.PNPM_VERSION }} -g
+
+      - name: Setup npm configuration
+        run: |
+          pnpm config set store-dir ${{ env.PNPM_CACHE_FOLDER }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: CheckIn and draw
+        run: pnpm dlx cross-env JUEJIN_COOKIE="${{ secrets.JUEJIN_COOKIE }}" node ./dist/juejin/index.js

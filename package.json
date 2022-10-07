@@ -1,0 +1,64 @@
+{
+  "name": "@yuukoyoung/cron",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "preinstall": "only-allow pnpm",
+    "commit": "cz",
+    "hooks": "simple-git-hooks",
+    "run:prettier": "prettier \"**/*.{js,mjs,cjs,ts,css,scss,less,json,jsonc,json5,md,html,vue,yml,yaml}\"",
+    "lint": "pnpm run lint:eslint && pnpm run lint:prettier",
+    "lint:eslint": "eslint \"**/*.{js,mjs,cjs,ts,json,jsonc,json5}\"",
+    "lint:prettier": "pnpm run run:prettier --check",
+    "fix": "pnpm run fix:eslint && pnpm run fix:prettier",
+    "fix:eslint": "pnpm run lint:eslint --fix",
+    "fix:prettier": "pnpm run run:prettier --write",
+    "build": "tsc --project ./tsconfig.build.json"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.cjs"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "17.0.2",
+    "@commitlint/config-conventional": "17.0.2",
+    "@types/node": "18.7.13",
+    "@typescript-eslint/eslint-plugin": "5.28.0",
+    "@typescript-eslint/parser": "5.28.0",
+    "@yuukoyoung/eslint-config": "0.4.1",
+    "@yuukoyoung/prettier-config": "0.2.0",
+    "commitizen": "4.2.4",
+    "commitlint-config-cz": "0.13.3",
+    "cross-env": "7.0.3",
+    "cz-customizable": "6.3.0",
+    "eslint": "8.17.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-eslint-comments": "3.2.0",
+    "eslint-plugin-jsonc": "2.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "lint-staged": "13.0.3",
+    "only-allow": "1.1.0",
+    "prettier": "2.6.2",
+    "simple-git-hooks": "2.8.0",
+    "typescript": "4.5.4"
+  },
+  "dependencies": {
+    "axios": "1.1.2"
+  },
+  "packageManager": "pnpm@7.1.1",
+  "engines": {
+    "node": ">=14.19.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged",
+    "commit-msg": "pnpm exec commitlint --edit --verbose"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts,json,jsonc,json5}": "pnpm exec eslint",
+    "*.{js,mjs,cjs,ts,css,scss,less,json,jsonc,json5,md,html,vue,yml,yaml}": "pnpm exec prettier --check"
+  }
+}
